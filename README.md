@@ -1,6 +1,6 @@
 # ferry_flutter_bloc
 
-BLOC wrapper over `graphql_flutter` streams with improved state handling.
+BLOC wrapper over `ferry` streams with improved state handling.
 
 ## How to use
 
