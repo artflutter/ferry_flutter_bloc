@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:example/bloc.dart';
+import 'package:example/mutation.dart';
 import 'package:ferry/ferry.dart';
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // 'simple': (_) => Simple(),
         'bloc': (_) => Bloc(),
-        // 'mutation': (_) => Mutation(),
+        'mutation': (_) => Mutation(),
       },
       home: Home(),
     );
