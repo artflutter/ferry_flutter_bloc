@@ -8,9 +8,7 @@ part 'state.freezed.dart';
 abstract class MutationState<T> with _$MutationState<T> {
   const factory MutationState.initial() = MutationStateInitial;
 
-  const factory MutationState.loading({
-    OperationResponse result,
-  }) = MutationStateLoading<T>;
+  const factory MutationState.loading() = MutationStateLoading<T>;
 
   const factory MutationState.error({
     @required LinkException error,

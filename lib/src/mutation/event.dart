@@ -5,18 +5,22 @@ import 'package:meta/meta.dart';
 part 'event.freezed.dart';
 
 @freezed
-abstract class MutationEvent<T> with _$MutationEvent<T> {
+abstract class MutationEvent<TData, TVars> with _$MutationEvent<TData, TVars> {
   const factory MutationEvent.error({
     @required LinkException error,
     @required OperationResponse result,
-  }) = MutationEventError<T>;
+  }) = MutationEventError<TData, TVars>;
 
-  const factory MutationEvent.loading({
-    OperationResponse result,
-  }) = MutationEventLoading<T>;
+  const factory MutationEvent.run(
+    TVars variables, {
+    TData optimisticResponse,
+    String updateCacheHandlerKey,
+    Map<String, dynamic> updateCacheHandlerContext,
+    FetchPolicy fetchPolicy,
+  }) = MutationEventRun<TData, TVars>;
 
   const factory MutationEvent.completed({
-    @required T data,
+    @required TData data,
     @required OperationResponse result,
-  }) = MutationEventCompleted<T>;
+  }) = MutationEventCompleted<TData, TVars>;
 }

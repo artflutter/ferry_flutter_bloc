@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.0.3-beta.1
+- mutation bloc improvements
+
 ## 0.0.2-beta.2
 - readme update
 

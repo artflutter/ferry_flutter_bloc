@@ -7,6 +7,7 @@ import 'package:ferry_flutter_bloc/ferry_flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import 'graphql/mutations/add_company.data.gql.dart';
+import 'graphql/mutations/add_company.var.gql.dart';
 import 'graphql/schema/schema.schema.gql.dart';
 
 class Mutation extends StatefulWidget {
@@ -20,7 +21,7 @@ class _MutationState extends State<Mutation> {
 
   @override
   void initState() {
-    bloc = AddCompanyBloc(client: GetIt.I<Client>());
+    bloc = AddCompanyBloc(client: GetIt.I<Client>(), request: GAddCompanyReq());
 
     super.initState();
   }
@@ -38,7 +39,7 @@ class _MutationState extends State<Mutation> {
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
 
-              bloc.run(GAddCompanyReq((b) => b..vars.input = company));
+              bloc.run(GAddCompanyVarsBuilder()..input = company);
             }
           },
         ),

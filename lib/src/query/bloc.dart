@@ -14,7 +14,7 @@ abstract class QueryBloc<T, R extends OperationRequest<T, dynamic>>
   R options;
 
   QueryBloc({@required this.client, @required this.options})
-      : super(QueryState<T>.initial()) {}
+      : super(QueryState<T>.initial());
 
   void dispose() {
     result.cancel();
