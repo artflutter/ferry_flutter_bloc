@@ -7,25 +7,38 @@ import 'package:meta/meta.dart';
 import 'event.dart';
 import 'state.dart';
 
-abstract class QueryBloc<T, R extends OperationRequest<T, dynamic>>
-    extends Bloc<QueryEvent<T>, QueryState<T>> {
+abstract class QueryBloc<TData, TVars,
+        TRequest extends OperationRequest<TData, dynamic>>
+    extends Bloc<QueryEvent<TData, TVars>, QueryState<TData>> {
   Client client;
   StreamSubscription result;
-  R options;
+  TRequest request;
 
-  QueryBloc({@required this.client, @required this.options})
-      : super(QueryState<T>.initial());
+  QueryBloc({@required this.client, @required this.request})
+      : super(QueryState<TData>.initial());
 
   void dispose() {
-    result.cancel();
+    result?.cancel();
   }
 
-  void run() {
-    add(QueryEvent<T>.run());
+  void run({
+    TVars variables,
+    TData optimisticResponse,
+    String updateCacheHandlerKey,
+    Map<String, dynamic> updateCacheHandlerContext,
+    FetchPolicy fetchPolicy,
+  }) {
+    add(QueryEvent<TData, TVars>.run(
+      variables: variables,
+      optimisticResponse: optimisticResponse,
+      updateCacheHandlerKey: updateCacheHandlerKey,
+      updateCacheHandlerContext: updateCacheHandlerContext,
+      fetchPolicy: fetchPolicy,
+    ));
   }
 
   void refetch() {
-    add(QueryEvent<T>.refetch());
+    add(QueryEvent<TData, TVars>.refetch());
   }
 
   bool shouldFetchMore(int i, int threshold) => false;
@@ -38,23 +51,21 @@ abstract class QueryBloc<T, R extends OperationRequest<T, dynamic>>
 
   bool get isRefetching => state is QueryStateRefetch;
 
-  T parseData(Map<String, dynamic> data);
+  bool get hasData => (state is QueryStateLoaded<TData> ||
+      state is QueryStateFetchMore<TData> ||
+      state is QueryStateRefetch<TData>);
 
-  bool get hasData => (state is QueryStateLoaded<T> ||
-      state is QueryStateFetchMore<T> ||
-      state is QueryStateRefetch<T>);
-
-  bool get hasError => state is QueryStateError<T>;
+  bool get hasError => state is QueryStateError<TData>;
 
   String get getError => hasError
-      ? parseOperationException((state as QueryStateError<T>).error)
+      ? parseOperationException((state as QueryStateError<TData>).error)
       : null;
 
-  Future<void> _runQuery() async {
-    result = client.responseStream(options).listen((OperationResponse result) {
+  Future<void> _runQuery(TRequest request) async {
+    result = client.responseStream(request).listen((OperationResponse result) {
       if (state is QueryStateRefetch &&
           result.dataSource == DataSource.Cache &&
-          options.fetchPolicy == FetchPolicy.CacheAndNetwork) {
+          request.fetchPolicy == FetchPolicy.CacheAndNetwork) {
         return;
       }
 
@@ -64,12 +75,13 @@ abstract class QueryBloc<T, R extends OperationRequest<T, dynamic>>
 
       if (!result.loading && result.data != null) {
         add(
-          QueryEvent<T>.loaded(data: result.data, result: result),
+          QueryEvent<TData, TVars>.loaded(data: result.data, result: result),
         );
       }
 
       if (result.hasErrors) {
-        add(QueryEvent<T>.error(error: result.linkException, result: result));
+        add(QueryEvent<TData, TVars>.error(
+            error: result.linkException, result: result));
       }
     });
   }
@@ -78,39 +90,61 @@ abstract class QueryBloc<T, R extends OperationRequest<T, dynamic>>
     client.requestController.add(options);
   }
 
-  void _refetch() => client.requestController.add(options);
+  void _refetch() => client.requestController.add(request);
 
   @override
-  Stream<QueryState<T>> mapEventToState(QueryEvent<T> event) async* {
-    if (event is QueryEventRun<T>) {
-      _runQuery();
+  Stream<QueryState<TData>> mapEventToState(
+      QueryEvent<TData, TVars> event) async* {
+    if (event is QueryEventRun<TData, TVars>) {
+      final queryRequest = (request as dynamic).rebuild((b) {
+        if (event.variables != null) {
+          b.vars = event.variables;
+        }
+
+        if (event.updateCacheHandlerContext != null) {
+          b.updateCacheHandlerContext = event.updateCacheHandlerContext;
+        }
+        if (event.optimisticResponse != null) {
+          b.optimisticResponse = event.optimisticResponse;
+        }
+        if (event.updateCacheHandlerKey != null) {
+          b.updateCacheHandlerKey = event.updateCacheHandlerKey;
+        }
+        if (event.fetchPolicy != null) {
+          b.fetchPolicy = event.fetchPolicy;
+        }
+        return b;
+      });
+
+      _runQuery(queryRequest);
     }
 
-    if (event is QueryEventLoading<T>) {
+    if (event is QueryEventLoading<TData, TVars>) {
       yield QueryState.loading(result: event.result);
     }
 
-    if (event is QueryEventLoaded<T>) {
-      yield QueryState<T>.loaded(data: event.data, result: event.result);
+    if (event is QueryEventLoaded<TData, TVars>) {
+      yield QueryState<TData>.loaded(data: event.data, result: event.result);
     }
 
-    if (event is QueryEventError<T>) {
-      yield QueryState<T>.error(error: event.error, result: event.result);
+    if (event is QueryEventError<TData, TVars>) {
+      yield QueryState<TData>.error(error: event.error, result: event.result);
     }
 
-    if (event is QueryEventRefetch<T> &&
-        (state is QueryStateLoaded<T> || state is QueryStateError<T>)) {
-      yield QueryState<T>.refetch(
+    if (event is QueryEventRefetch<TData, TVars> &&
+        (state is QueryStateLoaded<TData> || state is QueryStateError<TData>)) {
+      yield QueryState<TData>.refetch(
           data: state.maybeWhen(loaded: (data, _) => data, orElse: () => null),
           result: null);
       _refetch();
     }
 
-    if (event is QueryEventFetchMore<T> && state is QueryStateLoaded<T>) {
-      yield QueryState<T>.fetchMore(
+    if (event is QueryEventFetchMore<TData, TVars> &&
+        state is QueryStateLoaded<TData>) {
+      yield QueryState<TData>.fetchMore(
           data: state.maybeWhen(loaded: (data, _) => data, orElse: () => null),
           result: null);
-      _fetchMore(event.options);
+      _fetchMore(event.request);
     }
   }
 }

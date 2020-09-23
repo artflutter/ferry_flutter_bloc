@@ -18,11 +18,8 @@ class _$MutationStateTearOff {
   }
 
 // ignore: unused_element
-  MutationStateLoading<T> loading<T>(
-      {OperationResponse<dynamic, dynamic> result}) {
-    return MutationStateLoading<T>(
-      result: result,
-    );
+  MutationStateLoading<T> loading<T>() {
+    return MutationStateLoading<T>();
   }
 
 // ignore: unused_element
@@ -53,7 +50,7 @@ mixin _$MutationState<T> {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result loading(OperationResponse<dynamic, dynamic> result),
+    @required Result loading(),
     @required
         Result error(
             LinkException error, OperationResponse<dynamic, dynamic> result),
@@ -63,7 +60,7 @@ mixin _$MutationState<T> {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result loading(OperationResponse<dynamic, dynamic> result),
+    Result loading(),
     Result error(
         LinkException error, OperationResponse<dynamic, dynamic> result),
     Result completed(T data, OperationResponse<dynamic, dynamic> result),
@@ -138,7 +135,7 @@ class _$MutationStateInitial<T> implements MutationStateInitial<T> {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result loading(OperationResponse<dynamic, dynamic> result),
+    @required Result loading(),
     @required
         Result error(
             LinkException error, OperationResponse<dynamic, dynamic> result),
@@ -156,7 +153,7 @@ class _$MutationStateInitial<T> implements MutationStateInitial<T> {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result loading(OperationResponse<dynamic, dynamic> result),
+    Result loading(),
     Result error(
         LinkException error, OperationResponse<dynamic, dynamic> result),
     Result completed(T data, OperationResponse<dynamic, dynamic> result),
@@ -209,7 +206,6 @@ abstract class $MutationStateLoadingCopyWith<T, $Res> {
   factory $MutationStateLoadingCopyWith(MutationStateLoading<T> value,
           $Res Function(MutationStateLoading<T>) then) =
       _$MutationStateLoadingCopyWithImpl<T, $Res>;
-  $Res call({OperationResponse<dynamic, dynamic> result});
 }
 
 class _$MutationStateLoadingCopyWithImpl<T, $Res>
@@ -221,52 +217,29 @@ class _$MutationStateLoadingCopyWithImpl<T, $Res>
 
   @override
   MutationStateLoading<T> get _value => super._value as MutationStateLoading<T>;
-
-  @override
-  $Res call({
-    Object result = freezed,
-  }) {
-    return _then(MutationStateLoading<T>(
-      result: result == freezed
-          ? _value.result
-          : result as OperationResponse<dynamic, dynamic>,
-    ));
-  }
 }
 
 class _$MutationStateLoading<T> implements MutationStateLoading<T> {
-  const _$MutationStateLoading({this.result});
-
-  @override
-  final OperationResponse<dynamic, dynamic> result;
+  const _$MutationStateLoading();
 
   @override
   String toString() {
-    return 'MutationState<$T>.loading(result: $result)';
+    return 'MutationState<$T>.loading()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is MutationStateLoading<T> &&
-            (identical(other.result, result) ||
-                const DeepCollectionEquality().equals(other.result, result)));
+    return identical(this, other) || (other is MutationStateLoading<T>);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(result);
-
-  @override
-  $MutationStateLoadingCopyWith<T, MutationStateLoading<T>> get copyWith =>
-      _$MutationStateLoadingCopyWithImpl<T, MutationStateLoading<T>>(
-          this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result loading(OperationResponse<dynamic, dynamic> result),
+    @required Result loading(),
     @required
         Result error(
             LinkException error, OperationResponse<dynamic, dynamic> result),
@@ -277,14 +250,14 @@ class _$MutationStateLoading<T> implements MutationStateLoading<T> {
     assert(loading != null);
     assert(error != null);
     assert(completed != null);
-    return loading(result);
+    return loading();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result loading(OperationResponse<dynamic, dynamic> result),
+    Result loading(),
     Result error(
         LinkException error, OperationResponse<dynamic, dynamic> result),
     Result completed(T data, OperationResponse<dynamic, dynamic> result),
@@ -292,7 +265,7 @@ class _$MutationStateLoading<T> implements MutationStateLoading<T> {
   }) {
     assert(orElse != null);
     if (loading != null) {
-      return loading(result);
+      return loading();
     }
     return orElse();
   }
@@ -330,11 +303,7 @@ class _$MutationStateLoading<T> implements MutationStateLoading<T> {
 }
 
 abstract class MutationStateLoading<T> implements MutationState<T> {
-  const factory MutationStateLoading(
-      {OperationResponse<dynamic, dynamic> result}) = _$MutationStateLoading<T>;
-
-  OperationResponse<dynamic, dynamic> get result;
-  $MutationStateLoadingCopyWith<T, MutationStateLoading<T>> get copyWith;
+  const factory MutationStateLoading() = _$MutationStateLoading<T>;
 }
 
 abstract class $MutationStateErrorCopyWith<T, $Res> {
@@ -408,7 +377,7 @@ class _$MutationStateError<T> implements MutationStateError<T> {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result loading(OperationResponse<dynamic, dynamic> result),
+    @required Result loading(),
     @required
         Result error(
             LinkException error, OperationResponse<dynamic, dynamic> result),
@@ -426,7 +395,7 @@ class _$MutationStateError<T> implements MutationStateError<T> {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result loading(OperationResponse<dynamic, dynamic> result),
+    Result loading(),
     Result error(
         LinkException error, OperationResponse<dynamic, dynamic> result),
     Result completed(T data, OperationResponse<dynamic, dynamic> result),
@@ -554,7 +523,7 @@ class _$MutationStateCompleted<T> implements MutationStateCompleted<T> {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result loading(OperationResponse<dynamic, dynamic> result),
+    @required Result loading(),
     @required
         Result error(
             LinkException error, OperationResponse<dynamic, dynamic> result),
@@ -572,7 +541,7 @@ class _$MutationStateCompleted<T> implements MutationStateCompleted<T> {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result loading(OperationResponse<dynamic, dynamic> result),
+    Result loading(),
     Result error(
         LinkException error, OperationResponse<dynamic, dynamic> result),
     Result completed(T data, OperationResponse<dynamic, dynamic> result),

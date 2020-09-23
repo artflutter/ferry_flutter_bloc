@@ -18,7 +18,7 @@ abstract class MutationBloc<TData, TVars,
       : super(MutationState<TData>.initial());
 
   void dispose() {
-    result.cancel();
+    result?.cancel();
   }
 
   void run(

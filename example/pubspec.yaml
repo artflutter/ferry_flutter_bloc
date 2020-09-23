@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   ferry: ^0.7.4
+  ferry_flutter: ^0.2.2
   gql_http_link: ^0.3.2-alpha
   hive: ^1.4.4
   ferry_hive_store: ^0.2.2

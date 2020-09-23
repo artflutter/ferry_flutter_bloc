@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.0.4-beta.1
+- bloc improvements + search example
+
 ## 0.0.3-beta.1
 - mutation bloc improvements
 

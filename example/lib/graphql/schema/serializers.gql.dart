@@ -21,6 +21,12 @@ import 'package:example/graphql/queries/companies_paginated_data.req.gql.dart'
     show GCompaniesPaginatedDataReq;
 import 'package:example/graphql/queries/companies_paginated_data.var.gql.dart'
     show GCompaniesPaginatedDataVars;
+import 'package:example/graphql/queries/search_company.data.gql.dart'
+    show GSearchCompanyData, GSearchCompanyData_searchCompany;
+import 'package:example/graphql/queries/search_company.req.gql.dart'
+    show GSearchCompanyReq;
+import 'package:example/graphql/queries/search_company.var.gql.dart'
+    show GSearchCompanyVars;
 import 'package:example/graphql/schema/schema.schema.gql.dart'
     show
         GCompanyInput,
@@ -55,6 +61,10 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GCompaniesPaginatedDataVars,
   GCompanyInput,
   GPaginationInput,
+  GSearchCompanyData,
+  GSearchCompanyData_searchCompany,
+  GSearchCompanyReq,
+  GSearchCompanyVars,
   Gexamples__JSON,
   Gfake__Locale,
   Gfake__Types,

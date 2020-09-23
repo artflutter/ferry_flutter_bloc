@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:example/bloc.dart';
 import 'package:example/mutation.dart';
+import 'package:example/search_query.dart';
+import 'package:example/simple.dart';
 import 'package:ferry/ferry.dart';
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:flutter/material.dart';
@@ -53,9 +55,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        // 'simple': (_) => Simple(),
+        'simple': (_) => Simple(),
         'bloc': (_) => Bloc(),
         'mutation': (_) => Mutation(),
+        'search': (_) => SearchQuery(),
       },
       home: Home(),
     );
@@ -67,23 +70,31 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select example"),
+        title: Text("Ferry Bloc"),
       ),
       body: ListView(
         children: [
           ListTile(
             title: Text('Simple example'),
+            subtitle: Text('native query example'),
             onTap: () => Navigator.of(context).pushNamed('simple'),
           ),
           Divider(),
           ListTile(
             title: Text('BLOC example'),
+            subtitle: Text('query, fetchMore, refetch'),
             onTap: () => Navigator.of(context).pushNamed('bloc'),
           ),
           Divider(),
           ListTile(
             title: Text('Mutation BLOC example'),
+            subtitle: Text('simple form + submit to call mutation'),
             onTap: () => Navigator.of(context).pushNamed('mutation'),
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Search query'),
+            onTap: () => Navigator.of(context).pushNamed('search'),
           ),
           Divider(),
         ],

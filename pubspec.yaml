@@ -1,6 +1,6 @@
 name: ferry_flutter_bloc
 description: A new Flutter package.
-version: 0.0.3-beta.1
+version: 0.0.4-beta.1
 repository: https://github.com/artflutter/ferry_flutter_bloc
 
 environment:

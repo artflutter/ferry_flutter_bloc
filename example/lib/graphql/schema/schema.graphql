@@ -30,6 +30,7 @@ type Query {
     allCompaniesPaginated(pagination: PaginationInput!): [Company!]
     company(id: ID): Company
     employee(id: ID): Employee
+    searchCompany(name: String!): [Company!]!
 }
 
 enum fake__Locale {

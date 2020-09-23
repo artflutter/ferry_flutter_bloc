@@ -161,7 +161,22 @@ const Query = _i1.ObjectTypeDefinitionNode(
                 defaultValue: null)
           ],
           type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'Employee'), isNonNull: false))
+              name: _i1.NameNode(value: 'Employee'), isNonNull: false)),
+      _i1.FieldDefinitionNode(
+          name: _i1.NameNode(value: 'searchCompany'),
+          directives: [],
+          args: [
+            _i1.InputValueDefinitionNode(
+                name: _i1.NameNode(value: 'name'),
+                directives: [],
+                type: _i1.NamedTypeNode(
+                    name: _i1.NameNode(value: 'String'), isNonNull: true),
+                defaultValue: null)
+          ],
+          type: _i1.ListTypeNode(
+              type: _i1.NamedTypeNode(
+                  name: _i1.NameNode(value: 'Company'), isNonNull: true),
+              isNonNull: true))
     ]);
 const fake__Locale = _i1.EnumTypeDefinitionNode(
     name: _i1.NameNode(value: 'fake__Locale'),

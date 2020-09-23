@@ -5,26 +5,32 @@ import 'package:meta/meta.dart';
 part 'event.freezed.dart';
 
 @freezed
-abstract class QueryEvent<T> with _$QueryEvent<T> {
+abstract class QueryEvent<TData, TVars> with _$QueryEvent<TData, TVars> {
   const factory QueryEvent.error({
     @required LinkException error,
     @required OperationResponse result,
-  }) = QueryEventError<T>;
+  }) = QueryEventError<TData, TVars>;
 
-  const factory QueryEvent.run() = QueryEventRun<T>;
+  const factory QueryEvent.run({
+    TVars variables,
+    TData optimisticResponse,
+    String updateCacheHandlerKey,
+    Map<String, dynamic> updateCacheHandlerContext,
+    FetchPolicy fetchPolicy,
+  }) = QueryEventRun<TData, TVars>;
 
   const factory QueryEvent.loading({
     @required OperationResponse result,
-  }) = QueryEventLoading<T>;
+  }) = QueryEventLoading<TData, TVars>;
 
   const factory QueryEvent.loaded({
-    @required T data,
+    @required TData data,
     @required OperationResponse result,
-  }) = QueryEventLoaded<T>;
+  }) = QueryEventLoaded<TData, TVars>;
 
-  const factory QueryEvent.refetch() = QueryEventRefetch<T>;
+  const factory QueryEvent.refetch() = QueryEventRefetch<TData, TVars>;
 
   const factory QueryEvent.fetchMore({
-    @required OperationRequest options,
-  }) = QueryEventFetchMore<T>;
+    @required OperationRequest request,
+  }) = QueryEventFetchMore<TData, TVars>;
 }
